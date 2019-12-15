@@ -177,18 +177,4 @@ public class RevisionFile implements Comparable<RevisionFile> {
 
         return version;
     }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-        RevisionFile f1 = new RevisionFile("TEST_SNMSP2_WBS_2단계개발_V2.1-20130305~0306.xlsx", "TEST_SNMSP2_WBS_2단계개발");
-        RevisionFile f2 = new RevisionFile("TEST_SNMSP2_WBS_2단계개발_v2.1.2-20130305~0306.xlsx", "TEST_SNMSP2_WBS_2단계개발");
-
-        System.out.println(f2.compareTo(f1));
-
-    }
-
 }
