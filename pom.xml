@@ -1,0 +1,350 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>open.commons.tools</groupId>
+	<artifactId>DocVersionManager</artifactId>
+	<version>2.2.0-RELEASE</version>
+	<name>Document Version Manager</name>
+
+	<properties>
+		<java-version>1.8</java-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+
+		<open-commons-core.version>1.6.16-RELEASE</open-commons-core.version>
+		<open-commons-json.version>1.6.4</open-commons-json.version>
+
+		<build.finalName>DocVersionManager</build.finalName>
+		<deploy.directory>deploy</deploy.directory>
+
+		<manifest.mainClass>open.commons.tool.dvm.ui.DocVersionManagerMainUI</manifest.mainClass>
+		
+		<timestamp>${maven.build.timestamp}</timestamp>
+   		<maven.build.timestamp.format>yyyyMMdd-HHmmSS</maven.build.timestamp.format>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>YMTECH Maven Repository</id>
+			<name>ymtech-maven-repo</name>
+			<url>http://nexus3.ymtech.co.kr/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+<!-- 		<repository> -->
+<!-- 			<id>repo1</id> -->
+<!-- 			<url>http://repo1.maven.org/maven2/</url> -->
+<!-- 		</repository> -->
+
+<!-- 		<repository> -->
+<!-- 			<id>maven-eclipse-repo</id> -->
+<!-- 			<url>http://maven-eclipse.github.io/maven</url> -->
+<!-- 		</repository> -->
+
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>YMTECH Maven Repository</id>
+			<name>ymtech-maven-repo</name>
+			<url>http://nexus3.ymtech.co.kr/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencies>
+		<!-- begin: open-commons -->
+		<dependency>
+			<groupId>open.commons</groupId>
+			<artifactId>open-commons-core</artifactId>
+			<version>${open-commons-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>open.commons</groupId>
+			<artifactId>open-commons-json</artifactId>
+			<version>${open-commons-json.version}</version>
+		</dependency>
+		<!-- end: open-commons -->
+
+		<!-- ************** -->
+		<!-- ************** -->
+		<!-- begin: logging -->
+		<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+		<!-- for llog4j-2.x: making all asynchronous loggers -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.3.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<!-- end: logging -->
+		<!-- ************** -->
+		<!-- ************** -->
+
+		<!-- *************** -->
+		<!-- *************** -->
+		<!-- begin: SWT, JFace libraries ****** -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.osgi -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.11.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.core.commands -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.commands</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.equinox.common -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.8.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.equinox.registry -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.registry</artifactId>
+			<version>3.6.100</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.core.runtime -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.text -->
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.text</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.win32.win32.x86_64 -->
+		<dependency>
+			<groupId>org.eclipse.swt</groupId>
+			<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.scout.sdk.deps/org.eclipse.jface -->
+		<dependency>
+			<groupId>org.eclipse.scout.sdk.deps</groupId>
+			<artifactId>org.eclipse.jface</artifactId>
+			<version>3.12.0.v20160518-1929</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.scout.sdk.deps/org.eclipse.jface.text -->
+		<dependency>
+			<groupId>org.eclipse.scout.sdk.deps</groupId>
+			<artifactId>org.eclipse.jface.text</artifactId>
+			<version>3.11.0.v20160505-1301</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.scout.sdk.deps/org.eclipse.ui.workbench -->
+		<dependency>
+			<groupId>org.eclipse.scout.sdk.deps</groupId>
+			<artifactId>org.eclipse.ui.workbench</artifactId>
+			<version>3.108.0.v20160602-1232</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.birt.runtime/com.ibm.icu -->
+		<dependency>
+			<groupId>org.eclipse.birt.runtime</groupId>
+			<artifactId>com.ibm.icu</artifactId>
+			<version>56.1.0.v201601250100</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.scout.sdk.deps/org.eclipse.ui.forms -->
+		<dependency>
+			<groupId>org.eclipse.scout.sdk.deps</groupId>
+			<artifactId>org.eclipse.ui.forms</artifactId>
+			<version>3.7.0.v20160518-1929</version>
+		</dependency>
+
+		<!-- end: SWT, JFace libraries ****** -->
+		<!-- *************** -->
+		<!-- *************** -->
+
+	</dependencies>
+
+
+
+	<build>
+		<finalName>${build.finalName}</finalName>
+		<defaultGoal>install</defaultGoal>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+		
+			<!-- begin: make 'clean external directories' -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>deploy/</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<!-- end: make 'clean external directories' -->
+		
+			<!-- begin: compile & attach sources -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<!-- <configuration> -->
+						<!-- <outputDirectory>${project.build.directory}/${build.finalName}</outputDirectory> -->
+						<!-- </configuration> -->
+					</execution>
+				</executions>
+			</plugin>
+			<!-- end: compile & attach sources -->
+
+			<!-- begin: make executable jar without dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>${manifest.mainClass}</mainClass>
+						</manifest>
+					</archive>
+					<outputDirectory>${project.build.directory}/${build.finalName}</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- end: make executable jar without dependencies -->
+
+			<!-- begin: make libraries -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- configure the plugin here -->
+							<outputDirectory>${project.build.directory}/${build.finalName}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- end: make libraries -->
+			
+			<!-- begin: make 'deploy' -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+<!-- 				<configuration> -->
+<!-- 					<descriptors> -->
+<!-- 						<descriptor>assembly/assembly-package-all.xml</descriptor> -->
+<!-- 					</descriptors> -->
+<!-- 				</configuration> -->
+				<executions>
+					<!-- begin: ${build.profile} -->
+					<execution>
+						<id>Package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${build.finalName}-${timestamp}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>assembly/assembly-package-all.xml</descriptor>
+							</descriptors>
+							<outputDirectory>${project.basedir}/${deploy.directory}</outputDirectory>
+						</configuration>
+					</execution>
+					<!-- end: ${build.profile} -->
+				</executions>
+			</plugin>
+			<!-- end: make 'deploy' -->
+
+			<!-- begin: javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<show>private</show>
+					<nohelp>true</nohelp>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
+					<charset>${encoding}</charset>
+					<docencoding>${encoding}</docencoding>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+			<!-- end: javadoc -->			
+			
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.eclipse</groupId> -->
+<!-- 				<artifactId>jface</artifactId> -->
+<!-- 			</plugin> -->
+		</plugins>
+	</build>
+</project>
