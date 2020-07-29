@@ -18,7 +18,7 @@
 		<manifest.mainClass>open.commons.tool.dvm.ui.DocVersionManagerMainUI</manifest.mainClass>
 		
 		<timestamp>${maven.build.timestamp}</timestamp>
-   		<maven.build.timestamp.format>yyyyMMdd-HHmmSS</maven.build.timestamp.format>
+   		<maven.build.timestamp.format>yyyyMMdd-hhmmssS</maven.build.timestamp.format>
 	</properties>
 
 	<repositories>
@@ -259,6 +259,8 @@
 				<configuration>
 					<archive>
 						<manifest>
+							<!-- MANIFES.MF 파일 생성시 SNAPSHOT 식별정보를 제거 -->
+							<useUniqueVersions>false</useUniqueVersions>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 							<mainClass>${manifest.mainClass}</mainClass>
