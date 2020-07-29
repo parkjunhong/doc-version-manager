@@ -55,6 +55,8 @@ public class FileReplacer {
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     static SimpleDateFormat logDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    static final StringBuffer sb = new StringBuffer();
+
     public FileReplacer(String[] args) {
         try {
             // parseArguments(args);
@@ -125,6 +127,7 @@ public class FileReplacer {
     }
 
     /**
+     * 주어진 기간 다음 기간 정보를 제공한다.
      * 
      * @param ldvHeader
      *            header of latest date value
@@ -163,12 +166,12 @@ public class FileReplacer {
         String nextLdvTail = null;
 
         if (DateUtil.compare(curDate, ldvHeader, ldvTail) > 0) {
-            nextLdvHeader = nextWeekValue(ldvHeader, 7);
-            nextLdvTail = nextWeekValue(ldvTail, 7);
+            nextLdvHeader = nextWeekValue(ldvHeader, 7, true);
+            nextLdvTail = nextWeekValue(ldvTail, 7, false);
 
             while (DateUtil.compare(curDate, nextLdvHeader, nextLdvTail) > 0) {
-                nextLdvHeader = nextWeekValue(nextLdvHeader, 7);
-                nextLdvTail = nextWeekValue(nextLdvTail, 7);
+                nextLdvHeader = nextWeekValue(nextLdvHeader, 7, true);
+                nextLdvTail = nextWeekValue(nextLdvTail, 7, false);
             }
 
             if (tail4) {
@@ -310,15 +313,15 @@ public class FileReplacer {
 
             if (nextFile != null) {
                 // 관리 파일이 변경된 경우 batch 파일 내용도 변경한다.
-//                int updateBatchFile = updateBatchFile(targetDir, nextFile, docConfig);
-//                logs.add(logMessage(updateBatchFile, latestFile.getSource(), nextFile));
+                // int updateBatchFile = updateBatchFile(targetDir, nextFile, docConfig);
+                // logs.add(logMessage(updateBatchFile, latestFile.getSource(), nextFile));
 
                 logs.add(logMessage(MSG_SUCCESS, latestFile.getSource(), nextFile));
 
             } else {
-//                int updateBatchFile = updateBatchFile(targetDir, latestFile.getSource(), docConfig);
-//                logs.add(logMessage(updateBatchFile, latestFile.getSource(), latestFile.getSource()));
-                
+                // int updateBatchFile = updateBatchFile(targetDir, latestFile.getSource(), docConfig);
+                // logs.add(logMessage(updateBatchFile, latestFile.getSource(), latestFile.getSource()));
+
                 logs.add(logMessage(MSG_EXIST_FILE, latestFile.getSource(), null));
             }
 
@@ -326,8 +329,8 @@ public class FileReplacer {
             String backupDirStr = docConfig.getBackupDir();
             if (backupDirStr != null) {
                 File bf = backupFile(latestFile.getSource(), backupDirStr);
-                logs.add(logMessage(bf != null ? MSG_FILE_BACKUP_SUCCESS : FILE_BACKUP_FAIL, latestFile.getSource(), bf != null ? bf : new File(backupDirStr, latestFile
-                        .getSource().getName())));
+                logs.add(logMessage(bf != null ? MSG_FILE_BACKUP_SUCCESS : FILE_BACKUP_FAIL, latestFile.getSource(),
+                        bf != null ? bf : new File(backupDirStr, latestFile.getSource().getName())));
 
                 if (nextFile != null) {
                     bf = backupFile(nextFile, backupDirStr);
@@ -409,8 +412,6 @@ public class FileReplacer {
 
         return Utils.getLatestFile(filePrefix, files);
     }
-
-    static final StringBuffer sb = new StringBuffer();
 
     private static String logMessage(int alertIndex, File latestFile, File nextFile) {
         sb.setLength(0);
@@ -516,7 +517,27 @@ public class FileReplacer {
         return sb.toString();
     }
 
-    private static String nextWeekValue(String dateValue, int day) {
+    /**
+     * 주어진 날짜에 7일을 더한다. <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2014. 11. 21.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param dateValue
+     *            yyyyMMdd
+     * @param day
+     * @param isHeader
+     *            구간 시작 여부. false 인 경우 구간 끝.
+     * @return
+     *
+     * @since 2014. 11. 21.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
+    private static String nextWeekValue(String dateValue, int day, boolean isHeader) {
         Calendar cal = Calendar.getInstance();
 
         cal.set(Calendar.YEAR, Integer.parseInt(dateValue.subSequence(0, 4).toString()));
@@ -525,7 +546,21 @@ public class FileReplacer {
 
         cal.add(Calendar.DAY_OF_MONTH, day);
 
+        // 구간 시작/끝 날짜 설정
+        cal.set(Calendar.DAY_OF_WEEK, isHeader ? Calendar.MONDAY : Calendar.FRIDAY);
+
         return DateUtil.getDateString(cal.getTime());
+    }
+
+    public static void main(String[] args) {
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        System.out.println(df.format(cal.getTime()));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        System.out.println(df.format(cal.getTime()));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        System.out.println(df.format(cal.getTime()));
 
     }
 
@@ -571,7 +606,8 @@ public class FileReplacer {
      * @param nextFile
      * @param docConfig
      *            TODO
-     * @return <ul>
+     * @return
+     *         <ul>
      *         <li>0: 성공
      *         <li>1: 실패
      *         <li>2: 오류발생

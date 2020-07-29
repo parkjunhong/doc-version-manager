@@ -71,20 +71,20 @@ import open.commons.tool.dvm.ui.IProjectConfigChangeListener;
 import open.commons.utils.FileUtils;
 
 public class ProjectConfigView extends Composite implements IUpdateLogListener {
+    private static final String REGEX_VERSION = "\\d+(\\.\\d+){0,2}";
+
+    static SimpleDateFormat logDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private ToolBar tbTitle;
 
     private Composite cpMenu;
 
     private Set<IProjectConfigChangeListener> listeners = new HashSet<>();
-
     private ScrolledComposite scrolledComposite;
 
     private Table table;
+
     private TableViewer tableViewer;
-
-    private static final String REGEX_VERSION = "\\d+(\\.\\d+){0,2}";
-
-    static SimpleDateFormat logDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private ProjectConfig projectConfig;
 
@@ -189,17 +189,17 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
         this.scrolledComposite.setExpandVertical(true);
 
         tableViewer = new TableViewer(this.scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
-//        this.tableViewer.setSorter(new Sorter());
+        // this.tableViewer.setSorter(new Sorter());
         this.tableViewer.setComparator(new Sorter());
         this.table = tableViewer.getTable();
         this.table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                switch ( e.button) {
+                switch (e.button) {
                     case 1: // left button
                         if (mouseOnColumn(e, ColumnLabelType.UPDATE.getColumnIndex())) {
                             TableItem item = mouseOnItem(e);
-                            
+
                             Font font = item.getFont(ColumnLabelType.UPDATE.getColumnIndex());
                             item.setData(genItemKey(item, "font", ColumnLabelType.UPDATE.getColumnIndex()), font);
                             FontData fd = font.getFontData()[0];
@@ -245,7 +245,9 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
 
                             updateFile(fud, item);
 
-                        } else if (mouseOnColumn(e, ColumnLabelType.OPEN_FILE.getColumnIndex())) {
+                        } else
+                        // 파일 열기
+                        if (mouseOnColumn(e, ColumnLabelType.OPEN_FILE.getColumnIndex())) {
                             final TableItem item = mouseOnItem(e);
                             final FileUpdateData fud = (FileUpdateData) item.getData();
                             DocConfig docConfig = fud.docConfig;
@@ -260,7 +262,9 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
 
                             openFile(docConfig);
 
-                        } else if (mouseOnColumn(e, ColumnLabelType.OPEN_DIR.getColumnIndex())) {
+                        } else
+                        // 파일이 있는 디렉토리 열기
+                        if (mouseOnColumn(e, ColumnLabelType.OPEN_DIR.getColumnIndex())) {
                             final TableItem item = mouseOnItem(e);
                             FileUpdateData fud = (FileUpdateData) item.getData();
                             final DocConfig docConfig = fud.docConfig;
@@ -310,7 +314,7 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
                                 popmenu.dispose();
                             }
                         });
-                        
+
                         popmenu.setVisible(true);
 
                         break;
@@ -690,6 +694,7 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
 
     enum ColumnLabelType {
         DOC_KIND(0), DOCUMENT(1), VERSION(2), UPDATE(3), OPEN_FILE(4), OPEN_DIR(5);
+
         private int index;
 
         private ColumnLabelType(int idx) {
@@ -848,7 +853,7 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
         }
     }
 
-//    private static class Sorter extends ViewerSorter {
+    // private static class Sorter extends ViewerSorter {
     private static class Sorter extends ViewerComparator {
         public int compare(Viewer viewer, Object e1, Object e2) {
             return ((FileUpdateData) e1).docConfig.getDocKind().compareTo(((FileUpdateData) e2).docConfig.getDocKind());

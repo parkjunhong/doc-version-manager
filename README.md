@@ -4,6 +4,11 @@
 - Email: fafanmama@naver.com
 
 # History
+[2020/07/29]
+- Release: 2.2.1-RELEASE
+- 추가기능
+  + 문서 날짜 변경 버그 수정.
+
 [2019/12/15]
 - Release: 2.2.0-RELEASE
 - 추가기능
