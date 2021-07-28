@@ -4,6 +4,11 @@
 - Email: fafanmama@naver.com
 
 # History
+[2021/07/28]
+- Release: 2.2.2-RELEASE
+- 버그수정
+  + 전체파일명에서 확장자를 제외한 나머지 파일명 추출 버그 수정.
+  
 [2020/07/29]
 - Release: 2.2.1-RELEASE
 - 추가기능

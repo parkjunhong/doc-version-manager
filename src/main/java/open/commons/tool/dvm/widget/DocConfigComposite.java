@@ -515,12 +515,15 @@ public class DocConfigComposite extends Composite {
 
                 String regex = "(.*)_[v|V]\\d+(.\\d+){0,2}\\-(\\d{8}\\-\\d{4}|\\d{8}\\-\\{8})\\..*";
 
+                boolean matched = false;
                 if (filename.matches(regex)) {
                     filename = filename.replaceAll(regex, "$1");
+                    matched = true;
                 }
                 textDir.setText(dir);
-                textName.setText(FileUtils.getFileNameNoExtension(filename));
-                textFileExtension.setText(FileUtils.getFileExtension(filepath));
+                textName.setText(matched ? filename : FileUtils.getFileNameNoExtension(filename));
+                String ext = FileUtils.getFileExtension(filepath);
+                textFileExtension.setText(ext);
             } else {
                 textDir.setText(dir + File.separator + filename);
             }

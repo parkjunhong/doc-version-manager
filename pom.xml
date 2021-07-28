@@ -9,8 +9,8 @@
 		<java-version>1.8</java-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 
-		<open-commons-core.version>1.7.0-SNAPSHOT</open-commons-core.version>
-		<open-commons-json.version>1.6.4</open-commons-json.version>
+		<open-commons-core.version>1.8.0-SNAPSHOT</open-commons-core.version>
+		<open-commons-json.version>1.7.0-SNAPSHOT</open-commons-json.version>
 
 		<build.finalName>DocVersionManager</build.finalName>
 		<deploy.directory>deploy</deploy.directory>
