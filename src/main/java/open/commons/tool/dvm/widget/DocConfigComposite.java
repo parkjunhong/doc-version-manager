@@ -515,12 +515,18 @@ public class DocConfigComposite extends Composite {
 
                 String regex = "(.*)_[v|V]\\d+(.\\d+){0,2}\\-(\\d{8}\\-\\d{4}|\\d{8}\\-\\{8})\\..*";
 
+                // 파일명 포맷이 설정된 것과 동일한 경우
+                boolean matched = false;
                 if (filename.matches(regex)) {
                     filename = filename.replaceAll(regex, "$1");
+                    matched = true;
                 }
                 textDir.setText(dir);
-                textName.setText(FileUtils.getFileNameNoExtension(filename));
-                textFileExtension.setText(FileUtils.getFileExtension(filepath));
+                // 파일명 설정
+                textName.setText(matched ? filename : FileUtils.getFileNameNoExtension(filename));
+                // 파일 확장자 설정
+                String ext = FileUtils.getFileExtension(filepath);
+                textFileExtension.setText(ext);
             } else {
                 textDir.setText(dir + File.separator + filename);
             }
