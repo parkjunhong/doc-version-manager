@@ -4,6 +4,11 @@
 - Email: fafanmama@naver.com
 
 # History
+[2021/10/11]
+- Release: 2.2.3
+- 버그수정
+  + 버전업할 파일이 사용 중일 때 올바르지 못한 메시지 수정.
+  
 [2021/07/28]
 - Release: 2.2.2-RELEASE
 - 버그수정

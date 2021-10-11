@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.FileAlreadyExistsException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +40,7 @@ import open.commons.tool.dvm.util.Utils;
 import open.commons.utils.ArrayUtils;
 import open.commons.utils.DateUtil;
 import open.commons.utils.FileUtils;
+import open.commons.utils.IOUtils;
 
 public class FileReplacer {
 
@@ -76,7 +79,12 @@ public class FileReplacer {
 
         File backupFile = new File(backupDir, filename);
 
-        return copyFile(srcFile, backupFile) ? backupFile : null;
+        try {
+            return copyFile(srcFile, backupFile) ? backupFile : null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -85,8 +93,9 @@ public class FileReplacer {
      *            복사할 파일
      * @param target
      *            복사된 파일
+     * @throws Exception
      */
-    private static boolean copyFile(File src, File target) {
+    private static boolean copyFile(File src, File target) throws IOException {
         InputStream input = null;
         OutputStream output = null;
 
@@ -106,22 +115,10 @@ public class FileReplacer {
             output.close();
 
         } catch (Exception e) {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException ignored) {
-                }
-            }
-            if (output != null) {
-                try {
-                    output.close();
-
-                    FileUtils.delete(target, true);
-                } catch (IOException ignored) {
-                }
-            }
-
-            return false;
+            FileUtils.delete(target, true);
+            throw e;
+        } finally {
+            IOUtils.close(input, output);
         }
         return true;
     }
@@ -185,34 +182,21 @@ public class FileReplacer {
         }
     }
 
-    private static File createNextFile(String targetDir, RevisionFile revLatestFile, String filePrefix, FileVersion3L newFileVersion) {
+    private static File createNextFile(String targetDir, RevisionFile revLatestFile, String filePrefix, FileVersion3L newFileVersion) throws Exception {
 
-        File latestFile = revLatestFile.getSource();
-        String fileExt_ = FileUtils.getFileExtension(latestFile);
-
-        // check 'new version'
-        FileVersion3L latestVersion = revLatestFile.getVersion();
-
-        boolean newVersioned = latestVersion.compareTo(newFileVersion) < 0;
-        String versions = "_v" + (newVersioned ? newFileVersion.toString() : latestVersion.toString());
-
-        // next date
-        String ldvHeader = revLatestFile.getMinDate();// dateValue_.substring(0, 8);
-        String ldvTail = revLatestFile.getMaxDate();// dateValue_.substring(9);
-
-        String nextDateValue = createNextDateValue(ldvHeader, ldvTail, revLatestFile.getDateConcatenator());
-
-        boolean copied = false;
-        File targetFile = null;
-
-        if (newVersioned || nextDateValue != null) {
-            String dateValue = nextDateValue != null ? nextDateValue : revLatestFile.getMinDate() + revLatestFile.getDateConcatenator() + revLatestFile.getMaxDate();
-            targetFile = new File(targetDir + File.separator + filePrefix + versions + "-" + dateValue + "." + fileExt_);
-            copied = copyFile(latestFile, targetFile);
-
+        File nextFile = nextFile(targetDir, revLatestFile, filePrefix, newFileVersion);
+        if (nextFile == null) {
+            return null;
         }
 
-        return copied ? targetFile : null;
+        // 새로운 버전에 해당하는 파일이 존재하는지 확인 - 2021. 10. 11. 오후 2:16:17 / Park_Jun_Hong_(fafanmama_at_naver_com)
+        if (nextFile.exists()) {
+            throw new FileAlreadyExistsException(nextFile.getAbsolutePath());
+        } else {
+            File latestFile = revLatestFile.getSource();
+            copyFile(latestFile, nextFile);
+            return nextFile;
+        }
     }
 
     /**
@@ -309,20 +293,21 @@ public class FileReplacer {
 
         } else {
 
-            File nextFile = createNextFile(targetDir, latestFile, filePrefix, newFileVersion);
-
-            if (nextFile != null) {
+            File nextFile = null;
+            try {
+                nextFile = createNextFile(targetDir, latestFile, filePrefix, newFileVersion);
                 // 관리 파일이 변경된 경우 batch 파일 내용도 변경한다.
                 // int updateBatchFile = updateBatchFile(targetDir, nextFile, docConfig);
                 // logs.add(logMessage(updateBatchFile, latestFile.getSource(), nextFile));
 
-                logs.add(logMessage(MSG_SUCCESS, latestFile.getSource(), nextFile));
-
-            } else {
-                // int updateBatchFile = updateBatchFile(targetDir, latestFile.getSource(), docConfig);
-                // logs.add(logMessage(updateBatchFile, latestFile.getSource(), latestFile.getSource()));
-
-                logs.add(logMessage(MSG_EXIST_FILE, latestFile.getSource(), null));
+                logs.add(logMessage(MSG_SUCCESS, latestFile.getSource(), nextFile, null));
+            } catch (FileAlreadyExistsException e) {
+                logs.add(logMessage(MSG_EXIST_FILE, latestFile.getSource(), new File(e.getFile()), e.getMessage()));
+            } catch (FileNotFoundException e) {
+                nextFile = nextFile(targetDir, latestFile, filePrefix, newFileVersion);
+                logs.add(logMessage(MSG_FAIL_TO_BATCH, latestFile.getSource(), nextFile, e.getMessage()));
+            } catch (Exception e) {
+                logs.add(logMessage(MSG_OCCUR_EXCEPTION, latestFile.getSource(), nextFile, e.getMessage()));
             }
 
             // backup latest file
@@ -330,11 +315,11 @@ public class FileReplacer {
             if (backupDirStr != null) {
                 File bf = backupFile(latestFile.getSource(), backupDirStr);
                 logs.add(logMessage(bf != null ? MSG_FILE_BACKUP_SUCCESS : FILE_BACKUP_FAIL, latestFile.getSource(),
-                        bf != null ? bf : new File(backupDirStr, latestFile.getSource().getName())));
+                        bf != null ? bf : new File(backupDirStr, latestFile.getSource().getName()), null));
 
                 if (nextFile != null) {
                     bf = backupFile(nextFile, backupDirStr);
-                    logs.add(logMessage(bf != null ? MSG_FILE_BACKUP_SUCCESS : FILE_BACKUP_FAIL, nextFile, bf != null ? bf : new File(backupDirStr, nextFile.getName())));
+                    logs.add(logMessage(bf != null ? MSG_FILE_BACKUP_SUCCESS : FILE_BACKUP_FAIL, nextFile, bf != null ? bf : new File(backupDirStr, nextFile.getName()), null));
                 }
             }
         }
@@ -413,7 +398,7 @@ public class FileReplacer {
         return Utils.getLatestFile(filePrefix, files);
     }
 
-    private static String logMessage(int alertIndex, File latestFile, File nextFile) {
+    private static String logMessage(int alertIndex, File latestFile, File nextFile, String additionalMsg) {
         sb.setLength(0);
         final String timestamp = logDate.format(new Date(System.currentTimeMillis())) + " | ";
         sb.append(timestamp);
@@ -427,7 +412,7 @@ public class FileReplacer {
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t변경 후 파일: ");
-                sb.append(nextFile.getName());
+                sb.append(nextFile != null ? nextFile.getName() : null);
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t현재 날짜: ");
@@ -442,7 +427,11 @@ public class FileReplacer {
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t변경 후 파일: ");
-                sb.append(nextFile.getName());
+                sb.append(nextFile != null ? nextFile.getName() : null);
+                sb.append('\n');
+                sb.append(timestamp);
+                sb.append("\t실패 원인: ");
+                sb.append(additionalMsg);
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t현재 날짜: ");
@@ -460,7 +449,7 @@ public class FileReplacer {
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t변경 후 파일: ");
-                sb.append(nextFile.getName());
+                sb.append(nextFile != null ? nextFile.getName() : null);
                 sb.append('\n');
                 sb.append(timestamp);
                 sb.append("\t현재 날짜: ");
@@ -517,6 +506,42 @@ public class FileReplacer {
         return sb.toString();
     }
 
+    public static void main(String[] args) {
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        System.out.println(df.format(cal.getTime()));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        System.out.println(df.format(cal.getTime()));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        System.out.println(df.format(cal.getTime()));
+
+    }
+
+    private static File nextFile(String targetDir, RevisionFile revLatestFile, String filePrefix, FileVersion3L newFileVersion) {
+        File latestFile = revLatestFile.getSource();
+        String fileExt_ = FileUtils.getFileExtension(latestFile);
+
+        // check 'new version'
+        FileVersion3L latestVersion = revLatestFile.getVersion();
+
+        boolean newVersioned = latestVersion.compareTo(newFileVersion) < 0;
+        String versions = "_v" + (newVersioned ? newFileVersion.toString() : latestVersion.toString());
+
+        // next date
+        String ldvHeader = revLatestFile.getMinDate();// dateValue_.substring(0, 8);
+        String ldvTail = revLatestFile.getMaxDate();// dateValue_.substring(9);
+
+        String nextDateValue = createNextDateValue(ldvHeader, ldvTail, revLatestFile.getDateConcatenator());
+
+        if (newVersioned || nextDateValue != null) {
+            String dateValue = nextDateValue != null ? nextDateValue : revLatestFile.getMinDate() + revLatestFile.getDateConcatenator() + revLatestFile.getMaxDate();
+            return new File(targetDir + File.separator + filePrefix + versions + "-" + dateValue + "." + fileExt_);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * 주어진 날짜에 7일을 더한다. <br>
      * 
@@ -550,18 +575,6 @@ public class FileReplacer {
         cal.set(Calendar.DAY_OF_WEEK, isHeader ? Calendar.MONDAY : Calendar.FRIDAY);
 
         return DateUtil.getDateString(cal.getTime());
-    }
-
-    public static void main(String[] args) {
-        Calendar cal = Calendar.getInstance();
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-        System.out.println(df.format(cal.getTime()));
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        System.out.println(df.format(cal.getTime()));
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        System.out.println(df.format(cal.getTime()));
-
     }
 
     private static String readFile(File file, String encoding) {
