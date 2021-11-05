@@ -4,7 +4,7 @@
  *
  * Date  : 2014. 11. 24. 오전 10:33:27
  *
- * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * Author: Park_Jun_Hong_(parkjunhong77@gmail.com)
  * 
  */
 
@@ -469,7 +469,7 @@ public class DocConfigComposite extends Composite {
             }
 
             if (!cbxExeCmd.isDisposed()) {
-                // (start) [BUG-FIX]: 파일 확장자 미확인으로 인한 UI 에러처리 / Park_Jun_Hong_(fafanmama_at_naver_com): 2019. 12. 15. 오후
+                // (start) [BUG-FIX]: 파일 확장자 미확인으로 인한 UI 에러처리 / Park_Jun_Hong_(parkjunhong77@gmail.com): 2019. 12. 15. 오후
                 // 5:48:40
                 if (docConfig.getFileExt() != null) {
                     // (end): 2019. 12. 15. 오후 5:48:40

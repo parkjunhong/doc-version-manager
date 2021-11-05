@@ -4,7 +4,7 @@
  *
  * Date  : 2014. 11. 24. 오전 11:10:01
  *
- * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * Author: Park_Jun_Hong_(parkjunhong77@gmail.com)
  * 
  */
 
@@ -232,9 +232,9 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
                             if (fud.document == null || fud.document.trim().isEmpty() //
                                     || fud.version == null || fud.version.trim().isEmpty()//
                             // begin - PATCH [2014. 12. 4.]: 배치파일을 통한 문서 접근을 제거함. |
-                            // Park_Jun_Hong_(fafanmama_at_naver_com)
+                            // Park_Jun_Hong_(parkjunhong77@gmail.com)
                             // || fud.docConfig.getExeCmd() == null || fud.docConfig.getExeCmd().trim().isEmpty()
-                            // end - Park_Jun_Hong_(fafanmama_at_naver_com), 2014. 12. 4.
+                            // end - Park_Jun_Hong_(parkjunhong77@gmail.com), 2014. 12. 4.
                             ) {
                                 MessageDialog.openWarning(getShell(), "문서 갱신 실패", "실제 파일이 존재하지 않거나 버전 정보가 올바르지 않습니다.\n정보: " + fud.toString());
 
@@ -564,7 +564,7 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
                         return;
                     }
 
-                    // begin - PATCH [2014. 12. 4.]: 배치파일을 통한 문서 접근을 제거함. | Park_Jun_Hong_(fafanmama_at_naver_com)
+                    // begin - PATCH [2014. 12. 4.]: 배치파일을 통한 문서 접근을 제거함. | Park_Jun_Hong_(parkjunhong77@gmail.com)
                     // final File batchFile = new File(docConfig.getFileDir(), docConfig.getFilename() +
                     // ".bat");
                     // if( !batchFile.exists()) {
@@ -583,7 +583,7 @@ public class ProjectConfigView extends Composite implements IUpdateLogListener {
                     // return;
                     // }
                     // }
-                    // end - Park_Jun_Hong_(fafanmama_at_naver_com), 2014. 12. 4.
+                    // end - Park_Jun_Hong_(parkjunhong77@gmail.com), 2014. 12. 4.
 
                     Runtime runtime = Runtime.getRuntime();
                     Process proc = runtime.exec(new String[] { docConfig.getExeCmd(), revFile.getSource().getAbsolutePath() });

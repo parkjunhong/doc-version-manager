@@ -4,7 +4,7 @@
  *
  * Date  : 2014. 11. 21. 오후 5:28:28
  *
- * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * Author: Park_Jun_Hong_(parkjunhong77@gmail.com)
  * 
  */
 
@@ -687,7 +687,7 @@ public class DocVersionManagerMainUI extends ApplicationWindow implements IDocCo
                             @Override
                             public void widgetSelected(SelectionEvent e) {
 
-                                // (start) [BUG-FIX]: 신규 문서 추가시 현재 프로젝트 이름 설정 / Park_Jun_Hong_(fafanmama_at_naver_com):
+                                // (start) [BUG-FIX]: 신규 문서 추가시 현재 프로젝트 이름 설정 / Park_Jun_Hong_(parkjunhong77@gmail.com):
                                 // 2019. 12. 15. 오후 6:43:18
                                 String project = null;
                                 if (ProjectConfig.class.isAssignableFrom(data.getClass())) {
@@ -719,7 +719,7 @@ public class DocVersionManagerMainUI extends ApplicationWindow implements IDocCo
 
                                         if (result.getResult()) {
                                             // (start) [BUG-FIX]: 파일 저장 취소에 따른 메시지 추가 /
-                                            // Park_Jun_Hong_(fafanmama_at_naver_com): 2019. 12. 15. 오후 6:47:01
+                                            // Park_Jun_Hong_(parkjunhong77@gmail.com): 2019. 12. 15. 오후 6:47:01
                                             if (result.getData() != null) {
                                                 MessageDialog.openInformation(mainShell, "작업 완료", "성공적으로 파일을 저장하였습니다.");
                                             } else {
@@ -831,7 +831,7 @@ public class DocVersionManagerMainUI extends ApplicationWindow implements IDocCo
         String filepath = dlg.open();
 
         if (filepath == null) {
-            // (start) [BUG-FIX]: 파일 저장 취소에 따른 메시지 추가 / Park_Jun_Hong_(fafanmama_at_naver_com): 2019. 12. 15. 오후 6:47:13
+            // (start) [BUG-FIX]: 파일 저장 취소에 따른 메시지 추가 / Park_Jun_Hong_(parkjunhong77@gmail.com): 2019. 12. 15. 오후 6:47:13
             result.andTrue().setMessage("파일을 저장하지 않았습니다.");
             // (end): 2019. 12. 15. 오후 6:47:13
 

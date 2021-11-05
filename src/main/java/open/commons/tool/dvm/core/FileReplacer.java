@@ -4,7 +4,7 @@
  *
  * Date  : 2014. 11. 21. 오후 1:44:01
  *
- * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * Author: Park_Jun_Hong_(parkjunhong77@gmail.com)
  * 
  */
 
@@ -189,7 +189,7 @@ public class FileReplacer {
             return null;
         }
 
-        // 새로운 버전에 해당하는 파일이 존재하는지 확인 - 2021. 10. 11. 오후 2:16:17 / Park_Jun_Hong_(fafanmama_at_naver_com)
+        // 새로운 버전에 해당하는 파일이 존재하는지 확인 - 2021. 10. 11. 오후 2:16:17 / Park_Jun_Hong_(parkjunhong77@gmail.com)
         if (nextFile.exists()) {
             throw new FileAlreadyExistsException(nextFile.getAbsolutePath());
         } else {
@@ -560,7 +560,7 @@ public class FileReplacer {
      * @return
      *
      * @since 2014. 11. 21.
-     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     * @author Park_Jun_Hong_(parkjunhong77@gmail.com)
      */
     private static String nextWeekValue(String dateValue, int day, boolean isHeader) {
         Calendar cal = Calendar.getInstance();

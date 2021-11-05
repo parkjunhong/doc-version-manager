@@ -4,7 +4,7 @@
  *
  * Date  : 2014. 10. 27. 오전 11:09:40
  *
- * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * Author: Park_Jun_Hong_(parkjunhong77@gmail.com)
  * 
  */
 
