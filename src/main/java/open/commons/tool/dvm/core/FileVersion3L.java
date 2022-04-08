@@ -10,7 +10,7 @@
 
 package open.commons.tool.dvm.core;
 
-import open.commons.utils.StringUtils;
+import open.commons.core.utils.StringUtils;
 
 public class FileVersion3L implements Comparable<FileVersion3L> {
 

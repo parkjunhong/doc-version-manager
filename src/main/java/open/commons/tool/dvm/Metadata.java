@@ -13,7 +13,7 @@ package open.commons.tool.dvm;
 import java.io.IOException;
 import java.util.Properties;
 
-import open.commons.config.ReferenceableProperties;
+import open.commons.core.config.ReferenceableProperties;
 
 public class Metadata {
 

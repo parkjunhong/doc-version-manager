@@ -33,14 +33,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import open.commons.log.LogStringFactory;
-import open.commons.log.LogStringFactory.LogStringContainer;
+import open.commons.core.log.LogStringFactory;
+import open.commons.core.log.LogStringFactory.LogStringContainer;
 import open.commons.tool.dvm.json.DocConfig;
 import open.commons.tool.dvm.util.Utils;
-import open.commons.utils.ArrayUtils;
-import open.commons.utils.DateUtil;
-import open.commons.utils.FileUtils;
-import open.commons.utils.IOUtils;
+import open.commons.core.utils.ArrayUtils;
+import open.commons.core.utils.DateUtil;
+import open.commons.core.utils.FileUtils;
+import open.commons.core.utils.IOUtils;
 
 public class FileReplacer {
 

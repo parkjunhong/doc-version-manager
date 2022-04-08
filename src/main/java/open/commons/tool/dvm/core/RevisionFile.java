@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import open.commons.utils.FileUtils;
+import open.commons.core.utils.FileUtils;
 
 public class RevisionFile implements Comparable<RevisionFile> {
 

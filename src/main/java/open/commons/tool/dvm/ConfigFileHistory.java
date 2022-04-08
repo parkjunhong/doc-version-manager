@@ -17,7 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import open.commons.utils.IOUtils;
+import open.commons.core.utils.IOUtils;
 
 public class ConfigFileHistory {
 

@@ -41,8 +41,8 @@ import open.commons.tool.dvm.json.Application;
 import open.commons.tool.dvm.json.DocConfig;
 import open.commons.tool.dvm.util.SWTUtils;
 import open.commons.tool.dvm.util.Utils;
-import open.commons.utils.ArrayUtils;
-import open.commons.utils.FileUtils;
+import open.commons.core.utils.ArrayUtils;
+import open.commons.core.utils.FileUtils;
 
 public class DocConfigComposite extends Composite {
 

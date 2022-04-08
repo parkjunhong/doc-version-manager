@@ -22,7 +22,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import open.commons.json.annotation.JSONField;
 import open.commons.json.model.DefaultJSONModel;
-import open.commons.utils.ComparableUtils;
+import open.commons.core.utils.ComparableUtils;
 
 /**
  * <a href="http://tools.ietf.org/html/rfc7159">JSON</a> source: <br>

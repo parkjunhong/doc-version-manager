@@ -28,13 +28,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import open.commons.text.NamedTemplate;
+import open.commons.core.text.NamedTemplate;
 import open.commons.tool.dvm.core.FileReplacer;
 import open.commons.tool.dvm.core.RevisionFile;
 import open.commons.tool.dvm.json.Application;
 import open.commons.tool.dvm.json.DocConfig;
-import open.commons.utils.DateUtil;
-import open.commons.utils.IOUtils;
+import open.commons.core.utils.DateUtil;
+import open.commons.core.utils.IOUtils;
 
 public class DocConfigInputDlg extends TitleAreaDialog {
 

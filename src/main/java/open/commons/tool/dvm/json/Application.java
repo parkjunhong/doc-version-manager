@@ -3,7 +3,7 @@ package open.commons.tool.dvm.json;
 import java.util.ArrayList;
 import java.util.List;
 
-import open.commons.annotation.ComparableValue;
+import open.commons.core.annotation.ComparableValue;
 import open.commons.json.annotation.JSONField;
 import open.commons.json.model.DefaultJSONModel;
 

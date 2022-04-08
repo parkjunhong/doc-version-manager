@@ -73,7 +73,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import open.commons.Result;
+import open.commons.core.Result;
 import open.commons.tool.dvm.Metadata;
 import open.commons.tool.dvm.json.DocConfig;
 import open.commons.tool.dvm.json.DvmConfig;
@@ -83,9 +83,9 @@ import open.commons.tool.dvm.widget.DocConfigView;
 import open.commons.tool.dvm.widget.ProjectConfigView;
 import open.commons.tool.dvm.widget.StringInputDlg;
 import open.commons.tool.dvm.widget.UpdateLogDigalog;
-import open.commons.utils.ArrayUtils;
-import open.commons.utils.FileUtils;
-import open.commons.utils.IOUtils;
+import open.commons.core.utils.ArrayUtils;
+import open.commons.core.utils.FileUtils;
+import open.commons.core.utils.IOUtils;
 
 public class DocVersionManagerMainUI extends ApplicationWindow implements IDocConfigChangeListener, IProjectConfigChangeListener {
 

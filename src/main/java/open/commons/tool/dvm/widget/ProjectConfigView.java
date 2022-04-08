@@ -68,7 +68,7 @@ import open.commons.tool.dvm.json.DocConfig;
 import open.commons.tool.dvm.json.ProjectConfig;
 import open.commons.tool.dvm.ui.DocVersionManagerMainUI;
 import open.commons.tool.dvm.ui.IProjectConfigChangeListener;
-import open.commons.utils.FileUtils;
+import open.commons.core.utils.FileUtils;
 
 public class ProjectConfigView extends Composite implements IUpdateLogListener {
     private static final String REGEX_VERSION = "\\d+(\\.\\d+){0,2}";
