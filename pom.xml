@@ -20,6 +20,9 @@
 
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMdd-hhmmssS</maven.build.timestamp.format>
+		
+		<org.apache.logging.log4j-api.version>2.17.2</org.apache.logging.log4j-api.version>
+		<slf4j-api.version>1.7.36</slf4j-api.version>
 	</properties>
 
 	<repositories>
@@ -75,9 +78,8 @@
 		</dependency>
 		<!-- end: open-commons -->
 
-		<!-- ************** -->
-		<!-- ************** -->
-		<!-- begin: logging -->
+		<!-- ********************** -->
+		<!-- >>> begin: logging -->
 		<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
 		<!-- for llog4j-2.x: making all asynchronous loggers -->
 		<dependency>
@@ -88,17 +90,30 @@
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.7</version>
+			<artifactId>log4j-core</artifactId>
+			<version>${org.apache.logging.log4j-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>[2.13.2,)</version>
+			<artifactId>log4j-api</artifactId>
+			<version>${org.apache.logging.log4j-api.version}</version>
 		</dependency>
-		<!-- end: logging -->
-		<!-- ************** -->
-		<!-- ************** -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${org.apache.logging.log4j-api.version}</version>
+		</dependency>
+
+		<!-- begin: slf4j -->
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
+		<!-- end: slf4j -->
+		<!-- <<< end: logging -->
+		<!-- ********************** -->
 
 		<!-- *************** -->
 		<!-- *************** -->
